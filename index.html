@@ -948,7 +948,7 @@ html, body { direction: ltr !important; text-align: left !important; }
         <div class="ir"><div class="ii ip"><i class="ti ti-file-text"></i></div><div class="ib2"><div class="it2">מצגת למשקיעים — Ready</div><div class="id">12 slides. Expected Revenue, ROI, Properties Map.</div></div></div>
         <div class="ir"><div class="ii it"><i class="ti ti-chart-bar"></i></div><div class="ib2"><div class="it2">Analysis market Portugal — Completed</div><div class="id">3 Recommended cities. Évora at the top.</div></div></div>
         <div class="ir"><div class="ii ia"><i class="ti ti-clock"></i></div><div class="ib2"><div class="it2">One-Pager Digital Nomad Hub — In Progress</div><div class="id">ETA: 2 hours</div></div></div>
-        <button class="btn-full">Generate New Idea ↗</button>
+        <button class="btn-full" onclick="generateFuturistIdea()">Generate New Idea ↗</button>
       </div>
     </div>
   </div>
@@ -1355,11 +1355,11 @@ function showScreenById(name) {
 </div>
 
 <script>
-const SYSTEM_PROMPT = `אתה AI Partner של Erestel1 Intelligence — מערכת Property management וreal estate מקצועית.
-אתה מדבר עברית, קצר ומדויק. אתה עוזר ליזם real estate לנהל properties, לזהות הזדמנויות, לשכנע לקוחות, וfor Analyze השקעות.
-הproperties הActiveים: Via Castello 14 (Mussomeli), Casa Rossi (Mussomeli), Palazzo Antico, Galilee Zimmer (ראש פינה), Vila do Sol (Portugal).
-Commission Averageת: 20% מבעלי properties פרטיים, 3% ממלונות.
-תמיד ענה בעברית, בCreateה ישירה ומעשית.`;
+const SYSTEM_PROMPT = `You are the AI Partner of Erestel1 Intelligence — a professional Property management and real estate system.
+You speak English, brief and precise. You help real estate entrepreneurs manage properties, identify opportunities, convince clients, and analyze investments.ת.
+Active properties: Via Castello 14 (Mussomeli), Casa Rossi (Mussomeli), Palazzo Antico, Galilee Zimmer (Rosh Pina), Vila do Sol (Portugal).
+Average Commission: 20% from private property owners, 3% from hotels.
+Always reply in English, direct and practical.`;
 
 let aiOpen = false;
 let aiHistory = [];
@@ -1397,12 +1397,12 @@ async function sendAI() {
       })
     });
     const data = await res.json();
-    const reply = data.content?.[0]?.text || 'שגיאה — נסה שוMo;
+    const reply = data.content?.[0]?.text || 'Error — please try again';
     updateMsg(loadId, reply);
     aiHistory.push({role:'assistant', content:reply});
     if(aiHistory.length > 20) aiHistory = aiHistory.slice(-20);
   } catch(e) {
-    updateMsg(loadId, 'שגיאת חיבור — Check אינטרנט ונסה שוMo);
+    updateMsg(loadId, 'Connection error — check internet and try again');
   }
 }
 
@@ -1674,7 +1674,7 @@ function updateMsg(id, text) {
         <div class="pt" style="font-size:11px;">Analysis fast Noזור</div>
         <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;">
           <button class="btn-action" style="font-size:11px;" onclick="analyzeMarket('Mussomeli, Sicily')">Mussomeli</button>
-          <button class="btn-action" style="font-size:11px;" onclick="analyzeMarket('Rosh Pina, Israel')">ראש פינה</button>
+          <button class="btn-action" style="font-size:11px;" onclick="analyzeMarket('Rosh Pina, Israel')">Rosh Pina</button>
           <button class="btn-action" style="font-size:11px;" onclick="analyzeMarket('Alentejo, Portugal')">אלנטז'ו</button>
           <button class="btn-action" style="font-size:11px;" onclick="analyzeMarket('Tel Aviv, Israel')">Tel Aviv</button>
         </div>
@@ -1748,10 +1748,10 @@ function updateMsg(id, text) {
 @keyframes spin{to{transform:rotate(360deg)}}
 </style>
 <script>
-const MARKET_SYSTEM = `אתה מומחה real estate ו-Revenue Management. ענה בעברית, קצר ומדויק.
-תן נתונים Realisticים לmarket Airbnb: Avg Occupancy, Night Price Average, Seasonality, המלצת price.
-פורמט התשובה — JSON בלבד, for No טקסט additional:
-{"occupancy": "72%", "adr": "89€", "revpar": "64€", "trend": "עולה", "trendSub": "+12% מהlast year", "season": [45,48,55,65,75,92,98,100,85,62,45,50], "recommendation": "טקסט", "insights": ["תובנה 1","תובנה 2","תובנה 3"]}`;
+const MARKET_SYSTEM = `You are a real estate and Revenue Management expert. Reply in English, brief and precise.
+Provide realistic Airbnb market data: Avg Occupancy, Night Price Average, Seasonality, price recommendation.
+Response format — JSON only, no additional text:
+{"occupancy": "72%", "adr": "89€", "revpar": "64€", "trend": "Rising", "trendSub": "+12% from last year", "season": [45,48,55,65,75,92,98,100,85,62,45,50], "recommendation": "טקסט", "insights": ["תובנה 1","תובנה 2","תובנה 3"]}`;
 
 async function analyzeMarket(location) {
   if(!location || location.trim()==='') return;
@@ -1769,7 +1769,7 @@ async function analyzeMarket(location) {
         model: 'claude-sonnet-4-6',
         max_tokens: 800,
         system: MARKET_SYSTEM,
-        messages: [{role:'user', content: 'Analyze את market Airbnb in ' + location + ' לשנת 2026. החזר JSON בלבד.'}]
+        messages: [{role:'user', content: 'Analyze Airbnb market in ' + location + ' for 2026. Return JSON only.'}]
       })
     });
     const data = await res.json();
@@ -1817,7 +1817,7 @@ async function loadCurrency() {
       '<div class="row" style="padding:5px 0;"><span style="font-size:12px;color:var(--text2);">EUR → ILS</span><span style="font-size:13px;font-weight:500;color:var(--text);">₪' + ils + '</span></div>' +
       '<div class="row" style="padding:5px 0;border-bottom:none;"><span style="font-size:12px;color:var(--text2);">EUR → USD</span><span style="font-size:13px;font-weight:500;color:var(--text);">$' + usd + '</span></div>';
   } catch(e) {
-    document.getElementById('currency-data').innerHTML = '<div style="font-size:11px;color:var(--text3);">EUR/ILS: ₪3.98 (משוער)</div>';
+    document.getElementById('currency-data').innerHTML = '<div style="font-size:11px;color:var(--text3);">EUR/ILS: ₪3.98 (liveוער)</div>';
   }
 }
 
@@ -2014,9 +2014,9 @@ function roiCalc(){
   const fmt=n=>Math.round(n).toLocaleString();
   const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
   set('roi-rev-now',fmt(revNow)+'€/₪');
-  set('roi-rev-now-sub','Occupancy '+Math.round(occ*100)+'% · '+nights+' לילות');
+  set('roi-rev-now-sub','Occupancy '+Math.round(occ*100)+'% · '+nights+' nights');
   set('roi-rev-mgd',fmt(revMgd)+'€/₪');
-  set('roi-rev-mgd-sub','Occupancy '+Math.round(newOcc*100)+'% · '+nightsM+' לילות');
+  set('roi-rev-mgd-sub','Occupancy '+Math.round(newOcc*100)+'% · '+nightsM+' nights');
   set('roi-annual-gain',(annGain>=0?'+':'')+fmt(annGain)+'€/₪');
   [{m:0.7,p:'pess'},{m:1.0,p:'real'},{m:1.3,p:'opt'}].forEach(s=>{
     const sO=Math.min(newOcc*s.m+(1-s.m)*occ,0.99);
@@ -2034,9 +2034,9 @@ function roiCalc(){
   set('roi-comm-year',fmt(cY)+'€/₪');
   set('roi-client-val',fmt(cY)+'€/₪');
   const ins=[];
-  if(newOcc>occ+0.05)ins.push({t:'Occupancy תעלה in '+Math.round((newOcc-occ)*100)+'%',d:'Dynamic Pricing וOptimisticזציה של לוח זfrom Janת'});
-  if(newPrice>price)ins.push({t:'Night Price יעלה in '+Math.round((newPrice/price-1)*100)+'%',d:'מ-'+Math.round(price)+' ל-'+Math.round(newPrice)+' — תמחור לפי Demand וSeasonality'});
-  if(revMgd>revNow*1.2)ins.push({t:'פוטנציאל High במיוחWe,d:'Added מעל 20% — הנכס הזה מתאים מאוד for Professional management'});
+  if(newOcc>occ+0.05)ins.push({t:'Occupancy will increase by '+Math.round((newOcc-occ)*100)+'%',d:'Dynamic Pricing and Optimizationsticזציה של לוח זfrom Janת'});
+  if(newPrice>price)ins.push({t:'Night price will increase by '+Math.round((newPrice/price-1)*100)+'%',d:'From '+Math.round(price)+' ל-'+Math.round(newPrice)+' — תמחור לפי Demand וSeasonality'});
+  if(revMgd>revNow*1.2)ins.push({t:'High potential property',d:'Added over 20% — highly suitable for PM'rofessional management'});
   const ic=document.getElementById('roi-insights-content');
   if(ic)ic.innerHTML=ins.map(i=>'<div class="ir"><div class="ii it"><i class="ti ti-check"></i></div><div class="ib2"><div class="it2">'+i.t+'</div><div class="id">'+i.d+'</div></div></div>').join('');
 }
@@ -2242,8 +2242,8 @@ const calData = {
     7:{status:'booked',prop:'Casa Rossi',price:'78€'},
     8:{status:'free'},
     9:{status:'free'},
-    10:{status:'blocked',reason:'תחזוקTh},
-    11:{status:'blocked',reason:'תחזוקTh},
+    10:{status:'blocked',reason:'Maintenance'},
+    11:{status:'blocked',reason:'Maintenance'},
     12:{status:'free'},
     13:{status:'pending',prop:'Galilee Zimmer'},
     14:{status:'pending',prop:'Galilee Zimmer'},
@@ -2302,7 +2302,7 @@ function renderCalendar() {
   }
   grid.innerHTML = html;
   
-  const months = ['Janאר','Febואר','Mar','Aprיל','May','Jun','Jul','Augוסט','Sepמבר','Octטובר','Novמבר','Decבר'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const el = document.getElementById('cal-month-label');
   if(el) el.textContent = months[month-1] + ' ' + year;
 }
@@ -2316,13 +2316,13 @@ function showDayInfo(d) {
   const detail = document.getElementById('cal-day-detail');
   if(!el || !title || !detail) return;
   
-  const months = ['Janאר','Febואר','Mar','Aprיל','May','Jun','Jul','Augוסט','Sepמבר','Octטובר','Novמבר','Decבר'];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   title.textContent = d + ' ' + months[month-1] + ' ' + year;
   
   if(info.status==='booked') detail.textContent = 'Occupied · ' + (info.prop||'') + ' · ' + (info.price||'');
   else if(info.status==='blocked') detail.textContent = 'Blocked · ' + (info.reason||'');
-  else if(info.status==='pending') detail.textContent = 'Pending Noישור · ' + (info.prop||'');
-  else detail.textContent = 'Available — ניתן להזמנTh;
+  else if(info.status==='pending') detail.textContent = 'Pending approval · ' + (info.prop||'');
+  else detail.textContent = 'Available — bookable';
   
   el.style.display = 'block';
 }
@@ -2587,7 +2587,7 @@ setTimeout(renderCalendar, 200);
 
 <script>
 // Revenue Bars
-const months = ['י','פ','מ','Su,'מ','י','י','Su,'ס','Su,'נ','We];
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const revenues = [5200,5800,6100,6800,7200,9200,10800,11800,10400,7600,6400,8200];
 const maxRev = Math.max(...revenues);
 const barsEl = document.getElementById('revenue-bars');
@@ -2637,7 +2637,7 @@ function doLogin() {
       showScreenById('owner');
     }
   } else {
-    if(errEl) { errEl.textContent='Email או Password שגויים'; errEl.style.display='block'; }
+    if(errEl) { errEl.textContent='Invalid email or password'; errEl.style.display='block'; }
   }
 }
 
@@ -2756,6 +2756,121 @@ async function saveIdeaToDb(market, ideaType, text) {
   }
 }
 </script>
+
+
+<script>
+// ============================================================
+// APPLIED FUTURISM INCUBATOR — Full 9-Agent Pipeline
+// All agents run via Netlify Function (server-side, secure)
+// ============================================================
+
+async function generateFuturistIdea() {
+  const btn = event.target
+  const originalText = btn.textContent
+  btn.textContent = '⚡ Running 9 Agents...'
+  btn.disabled = true
+
+  // Show loading in output area
+  let container = document.getElementById('idea-output')
+  if (!container) {
+    container = document.createElement('div')
+    container.id = 'idea-output'
+    container.style.cssText = 'margin-top:14px;padding:14px;background:var(--bg2);border-radius:10px;border:1px solid var(--border);'
+    btn.parentElement.insertBefore(container, btn.nextSibling)
+  }
+
+  container.innerHTML = `
+    <div style="text-align:center;padding:20px 0;">
+      <div style="font-size:13px;color:var(--gold);margin-bottom:8px;font-weight:500;">⚡ Applied Futurism Pipeline Running</div>
+      <div style="font-size:12px;color:var(--text3);line-height:1.8;">
+        🧠 Layer 1: Analyzing global sentiment & geopolitics...<br>
+        🌍 Layer 2: Filtering geographic opportunities...<br>
+        💡 Layer 3: Incubating your idea...
+      </div>
+    </div>
+  `
+
+  try {
+    const res = await fetch('/.netlify/functions/ai-proxy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ mode: 'generate' })
+    })
+
+    if (!res.ok) throw new Error('Server error ' + res.status)
+    
+    const data = await res.json()
+    
+    if (data.success && data.idea) {
+      displayIdea(data.idea, data.intelligence)
+      
+      // Save to Supabase
+      if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+        try {
+          await supabaseClient.from('daily_ideas').insert({
+            market: data.intelligence?.top_location?.city || 'Global',
+            idea_type: 'applied-futurism-9agents',
+            idea_text: data.idea,
+            date: new Date().toISOString().split('T')[0]
+          })
+        } catch(e) { console.log('Supabase save:', e) }
+      }
+    } else {
+      throw new Error(data.error || 'No idea generated')
+    }
+
+  } catch(err) {
+    console.error('Generate error:', err)
+    container.innerHTML = `
+      <div style="color:var(--warn);font-size:13px;padding:10px;text-align:center;">
+        ⚠️ Error: ${err.message}<br>
+        <span style="font-size:11px;color:var(--text3);">Check that ANTHROPIC_API_KEY is set in Netlify</span>
+      </div>
+    `
+  }
+
+  btn.textContent = originalText
+  btn.disabled = false
+}
+
+function displayIdea(idea, intelligence) {
+  let container = document.getElementById('idea-output')
+  if (!container) {
+    const btn = document.querySelector('[onclick="generateFuturistIdea()"]')
+    if (btn && btn.parentElement) {
+      container = document.createElement('div')
+      container.id = 'idea-output'
+      container.style.cssText = 'margin-top:14px;padding:14px;background:var(--bg2);border-radius:10px;border:1px solid var(--border);'
+      btn.parentElement.insertBefore(container, btn.nextSibling)
+    }
+  }
+
+  if (container) {
+    const formatted = idea
+      .split('\n')
+      .filter(l => l.trim())
+      .map(l => `<div style="margin-bottom:7px;font-size:13px;line-height:1.6;color:var(--text);">${l}</div>`)
+      .join('')
+
+    const intel = intelligence ? `
+      <div style="display:flex;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border);">
+        <div style="font-size:11px;color:var(--text3);">🧠 Crisis Score: <strong style="color:var(--gold)">${intelligence.sentiment_score || '—'}/100</strong></div>
+        <div style="font-size:11px;color:var(--text3);">📍 Location: <strong style="color:var(--gold)">${intelligence.top_location?.city || '—'}</strong></div>
+        <div style="font-size:11px;color:var(--text3);">📈 ROI: <strong style="color:var(--gold)">${intelligence.roi || '—'}%</strong></div>
+      </div>
+    ` : ''
+
+    container.innerHTML = `
+      <div style="font-size:11px;color:var(--gold);font-weight:500;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">
+        ⚡ Applied Futurism — 9-Agent Intelligence
+      </div>
+      ${formatted}
+      ${intel}
+    `
+  }
+}
+</script>
+
 
 </body>
 </html>
