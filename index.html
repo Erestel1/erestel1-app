@@ -1386,11 +1386,11 @@ async function sendAI() {
   const loadId = addMsg('assistant', '...', true);
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/.netlify/functions/ai-proxy', {
       method: 'POST',
-      headers: {'Content-Type':'application/json'},
+      headers: {'Content-Type':'application/json', },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-6',
         max_tokens: 600,
         system: SYSTEM_PROMPT,
         messages: aiHistory
@@ -1762,11 +1762,11 @@ async function analyzeMarket(location) {
   document.getElementById('mkt-trend').textContent = '...';
 
   try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+    const res = await fetch('/.netlify/functions/ai-proxy', {
       method: 'POST',
-      headers: {'Content-Type':'application/json'},
+      headers: {'Content-Type':'application/json', },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-6',
         max_tokens: 800,
         system: MARKET_SYSTEM,
         messages: [{role:'user', content: 'Analyze את market Airbnb in ' + location + ' לשנת 2026. החזר JSON בלבד.'}]
